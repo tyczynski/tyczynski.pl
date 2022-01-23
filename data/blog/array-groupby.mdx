@@ -1,0 +1,45 @@
+---
+title: 'Grupowanie elementów tablic z groupBy()'
+date: '2022-01-23'
+tags: ['javascript', 'ecmascript2022']
+draft: false
+summary: 'Omówienie nowej specyfikacji Array.prototype.groupBy oraz Array.prototype.groupByToMap nadchodzącej w nowym wydaniu ECMAScript 2022.'
+---
+
+Na horyzoncie dobrze zarysowała się już nowa propozycja rozszerzająca prototyp tablic w JavaScript. `Array.prototype.groupBy` bo o tym będzie ten artykuł, pozwoli na grupowanie elementów tablicy do poszczególnych kluczy, które będą zawarte w zwróconym obiekcie. Obecnie specyfikacja znajduje się w _Stage 3_, więc jest kompletna i czeka na właściwą implementację w przeglądarkach.
+
+## No to jak to działa?
+
+Działanie jest bardzo proste. Wywołujemy na tablicy metodę `groupBy`, a w callbacku otrzymujemy:
+
+- `item` czyli element tablicy
+- `index` czyli indeks licząc od zera
+- `array` czyli referencję
+
+Zwrócona wartość to natomiast będzie klucz, do którego będzie przypisany `item`.
+
+```javascript
+const array = [1, 2, 3, 4, 5, 6]
+
+const groups = array.groupBy((item, index, array) => {
+  return item % 2 === 0 ? 'even' : 'odd'
+})
+
+console.log(groups) // =>  { odd: [1, 3, 5], even: [2, 4, 6] }
+```
+
+Ale to nie koniec. W ramach specyfikacji jest również druga metoda groupByToMap. Robi ona to samo co jej brat, lecz zwraca mapę.
+
+```javascript
+const array = [1, 2, 3, 4, 5, 6]
+
+const groups = array.groupByToMap((item, index, array) => {
+  return item % 2 === 0 ? 'even' : 'odd'
+})
+
+console.log(groups) // =>  Map { odd: [1, 3, 5], even: [2, 4, 6] }
+```
+
+## Proposal
+
+Całą propozycję możecie przejrzeć na [GitHubie](https://github.com/tc39/proposal-array-grouping), który opisuje specyfikację oraz intencję za nim idącą, a [core-js](https://github.com/zloirock/core-js#array-grouping) zawiera już zaimplementowany polyfill.
