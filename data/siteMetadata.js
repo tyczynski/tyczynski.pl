@@ -2,7 +2,8 @@ const siteMetadata = {
   title: 'Przemysław Tyczyński',
   author: 'Przemysław Tyczyński',
   headerTitle: 'Przemysław Tyczyński',
-  description: '',
+  description:
+    'Moja prywatna przestrzeń, gdzie raz po raz podzielę się czymś ciekawym lub całkowicie niewartym uwagi. Web(dev|security), tech i bzdury.',
   language: 'pl-PL',
   theme: 'system', // system, dark or light
   siteUrl: 'https://tyczynski.pl',
