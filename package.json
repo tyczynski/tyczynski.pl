@@ -2,6 +2,14 @@
   "name": "tyczynski.pl",
   "version": "1.0.2",
   "private": true,
+  "homepage": "https://tyczynski.pl",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tyczynski/tyczynski.pl"
+  },
+  "bugs": {
+    "url": "https://github.com/tyczynski/tyczynski.pl/issues"
+  },
   "scripts": {
     "start": "cross-env SOCKET=true node ./scripts/next-remote-watch.js ./data",
     "dev": "next dev",
