@@ -1,12 +1,12 @@
+import Image from 'next/image'
+import type { ReactNode } from 'react'
 import siteMetadata from '@/data/siteMetadata'
 import headerNavLinks from '@/data/headerNavLinks'
-import Logo from '@/data/logo.svg'
 import Link from './Link'
 import SectionContainer from './SectionContainer'
 import Footer from './Footer'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
-import { ReactNode } from 'react'
 
 interface Props {
   children: ReactNode
@@ -18,15 +18,20 @@ const LayoutWrapper = ({ children }: Props) => {
       <div className="flex flex-col justify-between h-screen">
         <header className="flex items-center justify-between py-10">
           <div>
-            <Link href="/" aria-label="Tailwind CSS Blog">
+            <Link href="/" aria-label={siteMetadata.headerTitle}>
               <div className="flex items-center justify-between">
-                <div className="mr-3">
-                  <Logo />
+                <div className="flex mr-3">
+                  <Image
+                    width={64}
+                    height={64}
+                    src="/static/images/logo.png"
+                    alt={siteMetadata.headerTitle}
+                  />
                 </div>
                 {typeof siteMetadata.headerTitle === 'string' ? (
-                  <div className="hidden h-6 text-2xl font-semibold sm:block">
+                  <p className="hidden h-6 text-2xl font-semibold sm:block leading-none">
                     {siteMetadata.headerTitle}
-                  </div>
+                  </p>
                 ) : (
                   siteMetadata.headerTitle
                 )}

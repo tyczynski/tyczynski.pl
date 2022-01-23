@@ -1,16 +1,16 @@
 ---
-name: Tails Azimuth
+name: Przemysław Tyczyński
 avatar: /static/images/avatar.png
-occupation: Professor of Atmospheric Science
-company: Stanford University
-email: address@yoursite.com
-twitter: https://twitter.com/Twitter
-linkedin: https://www.linkedin.com
-github: https://github.com
+occupation: Front-end Software Engineer
+company: Allegro
+email: przemyslaw@tyczynski.pl
+twitter: https://twitter.com/tyta096
+linkedin: https://www.linkedin.com/in/ptyczynski
+github: https://github.com/tyczynski
 ---
 
-Tails Azimuth is a professor of atmospheric sciences at the Stanford AI Lab. His research interests includes complexity modelling of tailwinds, headwinds and crosswinds.
+Piszę front-endy i czasem coś na bloga. Mój kod możesz znaleźć na [GitHubie](https://github.com/tyczynski), a godność na [LinkedIn](https://www.linkedin.com/in/ptyczynski/).
 
-He leads the clean energy group which develops 3D air pollution-climate models, writes differential equation solvers, and manufactures titanium plated air ballons. In his free time he bakes raspberry pi.
+Jeżeli jesteście ciekawi [co nowego przyniósł Vue 3.0](https://geek.justjoin.it/vue-js-3-0-nowosci-i-zmiany-co-przyniosla-nowa-wersja) lub [czym jest i jak używać Resize Observer API](https://www.empressia.pl/blog/179-obserwowanie-zmian-rozmiaru-elementow-z-resize-observer-api) to zapraszam do lektury.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.
+Pozdrawiam P.

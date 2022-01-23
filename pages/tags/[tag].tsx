@@ -51,8 +51,8 @@ export default function Tag({ posts, tag }: InferGetStaticPropsType<typeof getSt
   return (
     <>
       <TagSEO
-        title={`${tag} - ${siteMetadata.title}`}
-        description={`${tag} tags - ${siteMetadata.author}`}
+        title={`${tag} • ${siteMetadata.title}`}
+        description={`${tag} tags • ${siteMetadata.author}`}
       />
       <ListLayout posts={posts} title={title} />
     </>
