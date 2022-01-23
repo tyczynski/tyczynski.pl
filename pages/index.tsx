@@ -68,9 +68,9 @@ export default function Home({ posts }: InferGetStaticPropsType<typeof getStatic
                         <Link
                           href={`/blog/${slug}`}
                           className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                          aria-label={`Read "${title}"`}
+                          aria-label={`Czytaj "${title}"`}
                         >
-                          Read more &rarr;
+                          Czytaj więcej &rarr;
                         </Link>
                       </div>
                     </div>
