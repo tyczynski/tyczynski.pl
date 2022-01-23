@@ -1,5 +1,11 @@
 # tyczynski.pl
 
+Personal webpage based on [Next.js](https://nextjs.org) framework.
+
+## Requirements
+
+- [Node.js](https://nodejs.org/en/) min `14.x` release or greater
+
 ## Installation
 
 ```bash
@@ -8,21 +14,13 @@ npm install
 
 ## Development
 
-First, run the development server:
-
-```bash
-npm start
-```
-
-    or
+Run the development server:
 
 ```bash
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
 ## Post
 
@@ -65,7 +63,3 @@ layout: PostLayout
 Run `node ./scripts/compose.js` to bootstrap a new post.
 
 Follow the interactive prompt to generate a post with pre-filled front matter.
-
-## Licence
-
-[MIT](https://github.com/timlrx/tailwind-nextjs-starter-blog/blob/master/LICENSE) © [Timothy Lin](https://www.timrlx.com)
