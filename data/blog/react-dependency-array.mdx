@@ -1,0 +1,134 @@
+---
+title: 'Kilka słów o React Dependency Array'
+date: '2022-01-26'
+tags: ['javascript', 'react']
+draft: false
+summary: 'Czym jest React Dependency Array. Kilka słów na temat implementacji, zasady działania oraz o tym jak się przestrzeć przed nieoczywistymi błędami.'
+---
+
+Wraz z nadejściem Hooków w React 16.0 pisanie aplikacji z tą biblioteką diametralnie się zmieniło. Porzuciliśmy podejście klasowe na rzecz funkcyjnego i można powiedzieć, że trzeba było nauczyć się Reacta od nowa. Hooki powiały świeżością, pozwoliły w łatwy i przyjemny sposób oddzielić warstwę logiczną od warstwy prezentacji oraz wprowadziły do komponentów funkcyjnych cykl życia. Jednak nie o Hookach (jako całości) będziesz czytać, a o jednak małej składowej _Dependency Array_.
+
+## Zasada działania _Dependency Array_
+
+_Dependency Array_ jest tablicą, którą zawiera cokolwiek. Nie jest to obszerny opis, ale całkowicie oddaje, czym jest i z czego się składa. Przekazuje się ją jako drugi parametr do takich hooków jak `useEffect`, `useMemo`, `useCallback` czy `useLayoutEffect`.
+
+```javascript
+useEffect(callback, dependencyList)
+
+useLayoutEffect(() => {
+  // code
+}, [foo])
+
+useCallback(() => {
+  // code
+}, [foo, bar])
+
+useMemo(() => {
+  // code
+}, [])
+```
+
+Najważniejsze jednak jest to, co się dzieje pod spodem. A dzieje się różnie, w zależności od zawartości. W przypadku, gdy przekazujesz pustą tablicę, to _callback_ wykonywany jest wyłącznie raz do momentu odmontowania komponentu. Natomiast gdy przekazywane są elementy, czyli tak zwane zależności (ang. _dependencies_), wtedy _callback_ wykona się za każdym razem, gdy będzie się różnić chociaż jedna z zależności pomiędzy kolejnymi cyklami życia komponentu. Spójrz na poniższy przykład:
+
+```javascript
+function Foo() {
+  const [value, setValue] = useState('')
+
+  useEffect(() => {
+    api.updateTitle(value)
+  }, [value])
+
+  return <input type="text" value={value} onChange={(e) => setValue(e.target.value)} />
+}
+```
+
+Napisałem komponent `Foo`, który zawiera stan `value` - czyli aktualną zawartość inputa tekstowego. Skoro w tym komponencie jest stan, to znaczy, że jest również cykl życia, który rozpoczyna się i kończy z każdym wpisanym nowym znakiem w inpucie. Zdefiniowany `useEffect`, posiada w _Dependency Array_ `value`, która jest z każdym kolejnym renderem inna, więc zgodnie z opisem _callback_, również będzie wraz z nim wykonywał.
+
+```javascript
+function Foo() {
+  // some logic
+  useEffect(() => {
+    console.log('bar')
+  }, [])
+  // some logic
+}
+```
+
+W powyższym przypadku _bar_ pojawi się w konsoli wyłącznie raz, niezależnie od ilości renderów komponentu, od czasu zamontowania do odmontowania.
+
+## Spójrz pod maskę, czyli jak porównuje się _Dependency Array_
+
+Chcąc być bardziej świadomym działania _Dependency Array_, warto przyjrzeć temu, co dzieje się pod spodem. To również nie jest przesadnie skomplikowane. Każdy proces musi mieć swój początek, a ten konkretny rozpoczyna się od [memoizacji](https://www.nafrontendzie.pl/wzorzec-memoization-javascript) (_memoization pattern_) pierwszej tablicy, która zostaje przekazana jako _Dependency Array_. I następnie czeka na kolejną, która zostanie przekazana przy kolejnym renderze. Gdy już nadejdzie i przekazana jest nowa tablica — wartości porównywane są z pomocą [`Object.is()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is). Według specyfikacji tej metody wartości są równe, gdy oba są
+
+- `undefined`, `null`, `true` czy `false`
+- typu `string` o takiej samej zawartości
+- oba są typu `object` o tej samej referencji
+- takimi samymi liczbami lub `NaN`
+
+Można to przepisać na bardzo prostą implementację i upraszczając, że `dependencyList` to tablica zawsze o tej samej długości.
+
+```javascript
+let memo
+
+function compare(dependencyList) {
+  const same = dependencyList.every((item, index) => Object.is(item, memo[index]))
+
+  memo = dependencyList
+  return same
+}
+```
+
+`Array.prototype.every` służy do sprawdzania, czy każdy element tablicy przechodzi test zaimplementowany w _callbacku_. Jeżeli tak, zwracana jest wartość `true`, w przeciwnym wypadku `false`. W ten sposób sprawdzasz, czy każdy element _Dependency Array_ jest równy zmemoizowanej tablicy.
+
+## Zdradliwe _default props_
+
+Ostatnią kwestią jest pewna pułapka, na którą możesz się natknąć, przekazując zależności do _Dependency Array_. Spójrz na ten przykład i bez czytania dalej, powiedz sobie w myślach, w jaki sposób zadziała poniższy kod i odpowiedz: ile będzie wynosić `counter` po 2 sekundach?
+
+```javascript
+function Foo({ config = {} }) {
+  const [counter, setCounter] = useState(0)
+  const [, setRandom] = useState(0)
+
+  useEffect(() => {
+    setCounter((v) => v + 1)
+  }, [config])
+
+  useEffect(() => {
+    setTimeout(() => setRandom(Math.random()), 500)
+    setTimeout(() => setRandom(Math.random()), 1000)
+    setTimeout(() => setRandom(Math.random()), 2000)
+  }, [])
+
+  return <p>Counter: {counter}</p>
+}
+```
+
+.
+
+.
+
+.
+
+.
+
+.
+
+.
+
+Jeżeli Twoją odpowiedzią jest 3 to gratulacje! Doskonale zdajesz sobie sprawę, w jaki sposób działa _default parameters_. Jeżeli uważasz inaczej lub masz pewności, to już spieszę z odpowiedzią. Wynika to z faktu, że w JavaScript _default parameters_ są ustawiane w momencie wykonywania funkcji. Obiekty są więc tworzone za każdym razem na nowo, za każdym kolejnym renderem komponentu. Zatem w jaki sposób się przed tym uchronić? Najprościej: domyślną wartość przechowywać w zmiennej czy stałej. Wtedy podczas renderów referencje będą się zgadzały i `useEffect` nie będzie się nadmiarowo wykonywał.
+
+```javascript
+const defaultObject = {}
+
+function Foo({ config = defaultObject }) {
+  // code
+  useEffect(() => {
+    setCounter((v) => v + 1)
+  }, [config])
+  // code
+}
+```
+
+## _Dependency Array_ - i wszystko jasne!
+
+Pomimo tego, że z wierzchu temat _Dependency Array_ wydaje się bardzo prosty, to warto czasem zagłębić się w zachowanie z pozoru trywialnych funkcjonalności. Dzięki temu możemy pogłębić wiedzę na temat JavaScriptu, biblioteki czy frameworku, którego się używa przy tym, zostając ekspertem w danej dziedzinie. Ciekawość to najlepszy kompan podczas nauki.
