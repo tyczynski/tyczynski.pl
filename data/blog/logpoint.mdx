@@ -1,0 +1,41 @@
+---
+title: 'Postaw sobie logpointa, czyli console.log() w narzędziach developerskich.'
+date: '2022-01-31'
+tags: ['javascript', 'debugowanie', 'webdev']
+draft: false
+summary: 'Wykorzystaj logpointy dostępne w narzędziach developerskich nowoczesnych przeglądarek w celu szybkiego, wygodnego i pewnego źródła prawdy tego co się dzieje w aplikacji internetowej.'
+---
+
+Jak powszechnie wiadomo najlepszym narzędziem do zdebugowania, dlaczego 1 + 1 równa się 11 jest wykorzystanie `console.log()`, ale dzięki _logpointom_, które są wbudowane w narzędzia developerskie każdej nowoczesnej przeglądarki, to możemy robić bezpośrednio tam, nie odrywając się od kontekstu. Przyjrzyjmy się, w jaki sposób możemy umilić sobie ten proces, zaprzęgając je do pracy.
+
+## Czym jest logpoint i jak go używać?
+
+Logpoint w przeglądarkach opartych na Chromium czy w Firefox jest już dostępny dla programistów od dobrych kilku lat, lecz nie każdy zdaję sobie sprawę z jego istnienia. Zasada działania jest bardzo prosta. Robi dokładnie to samo co `console.log()`, czyli wyświetli dowolny byt (pod warunkiem jego istnienia), jaki sobie do niego przekażemy.
+
+## Logpoint w praktyce
+
+Przechodząc do zakładki _Debugger_ (Firefox) lub _Source_ (Chromium), a następnie klikając lewym przyciskiem myszy na konkretnej linijce kodu w menu kontekstowym wyłania się _logpoint_ (Chromium) lub _log_ (Firefox).
+
+ℹ️ Wszystkie zrzuty ekranu (oczywiście oprócz pierwszego) prezentować będą Chrome DevTools. Firefox DevTools wyglądają analogicznie, różniąc się wyłącznie delikatnie nazewnictwem czy aranżacją UI.
+
+![Dodawanie loga w przeglądarce Firefox](/static/images/blog/logpoint/adding-firefox-log.png)
+
+![Dodawanie loga w przeglądarce Chrome](/static/images/blog/logpoint/adding-chrome-logpoint.png)
+
+Wybierając _logpoint_ mamy możliwość wpisania tam dowolnej rzeczy dostępnej w jego scope. W poniższym przykładzie wyświetlam obiekt `app` — który jest sercem aplikacji [React Todo MVC](https://todomvc.com/examples/react/#/). Po odświeżeniu strony w zakładce _Console_ możemy zauważyć obiekt z aktualną zawartością.
+
+![Wpisywanie zawartości logpointa](/static/images/blog/logpoint/logpoint-input.png)
+
+![Dodany logpoint](/static/images/blog/logpoint/logpoint-in-example.png)
+
+Logpointów można postawić niezliczenie wiele i w jakimkolwiek miejscu (o ile source map twojej aplikacji dobrze się generuje), a wszystkie istniejące wyświetlają się w zakładce _Breakpoints_, która umieszczona jest obok kodu źródłowego. Każdy logpoint można zdezaktywować klikając w kolorowy checkbox.
+
+Nieaktywny breakpoint wyróżnia się półprzeźroczystą etykietą. Dodatkowo klikając w snippet kodu zostaniemy przeniesieni do miejsca w kodzie, gdzie owy _logpoint_ został umieszczony.
+
+Jeszcze więcej opcji co do zarządzania logpointem znajduje się w menu kontekstowym, klikając PPM na pojedynczy element.
+
+![Logpoint w akcji](/static/images/blog/logpoint/logpoint-in-action.gif)
+
+## Czy znając logpointy, mogę zapomnieć o `console.log()`?
+
+Odkąd używam logpointów, bardzo ograniczyłem użycie `console.log()` w kodzie, ponieważ są wygodniejsze, a co najważniejsze szybsze i pewniejsze, ponieważ bez przechodzenia do edytora kodu można w błyskawiczny sposób debugować aplikację czy stronę internetową. Dodatkowo minimalizuję szansę zacommitowania niecenzuralnych słów (`console.log("d**a")`).
