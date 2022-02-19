@@ -1,0 +1,74 @@
+---
+title: 'Przerywanie zapytań na żądanie z AbortController'
+date: '2022-02-19'
+tags: ['javascript', 'webdev']
+draft: false
+summary: 'Czy można przerwać zapytania do API, które jeszcze się nie zakończyło? Z interfejsem AbortController, który jest dostarczany przez wszystkie nowoczesne przeglądarki, jesteśmy w stanie to zrobić.'
+images: ['/static/images/blog/abort-controller/cover.jpg']
+---
+
+Pisząc aplikacje internetowe, czasami potrzebujemy sprawić, żeby zapytanie asynchroniczne można było przerwać. Powodów jest wiele — danie możliwości użytkownikowi anulowania przesyłania pliku, przerwanie poprzedniego zapytania, które się jeszcze nie zakończyło, a nowe odpytuje ponownie o ten sam zasób czy podczas odmontowania komponentu Reactowego musimy przerwać zapytanie, żeby zapobiec wyciekowi pamięci. Dzięki `AbortController`, które rozszerza _fetch API_ jesteśmy w stanie zrobić to bardzo prosto więc warto dodać tę wiedzę do własnego arsenału umiejętności.
+
+## Geneza i wparcie
+
+`AbortController` nie istniał od początku istnienia _fetch API_. Potrzeba zrodziła się od _Issue_ założonego na GitHubie, z którym możecie zapoznać się [tutaj](https://github.com/whatwg/fetch/issues/27). Jest to już dojrzałe API, dostępne na wszystkich istotnych przeglądarkach (zgodnie z caniuse wsparcie na poziomie 94%), lecz gdy będzie potrzeba wsparcia starszych przeglądarek z pomocą wychodzi nam [polyfill](https://github.com/mo/abortcontroller-polyfill).
+
+## _AbortController_ w praktyce
+
+`AbortController` nie jest skomplikowaną klasą. Udostępnia nam metodę `abort()`, oraz właściwość `signal`, która jest obiektem typu `AbortSignal`. `signal` dodatkowo zawiera w sobie właściwość-flagę `aborted`, która jest `true` gdy zapytanie zostanie przez nas przerwane.
+
+Przyjrzyjmy się prostej implementacji:
+
+```javascript
+const controller = new AbortController()
+
+fetch(firstUrl, {
+  signal: controller.signal,
+})
+fetch(secondUrl, {
+  signal: controller.signal,
+})
+
+controller.abort()
+```
+
+Jak widać, nie jest to specjalnie skomplikowane. Najpierw musimy stworzyć nową instancję `AbortController`, następnie przekazujemy `signal` do jednego lub wielu `fetch`, a na koniec w zależności od potrzeb wykonujemy `abort()` w celu anulowania zapytania.
+
+### Obsługa wyjątków
+
+Jest jeszcze jedna rzecz, którą należy wiedzieć. Wywołując `abort()` rzucany jest wyjątek, który należy obsłużyć. Błąd jest typu `DOMException`, a zidentyfikować można go po nazwie `AbortError`.
+
+```javascript
+DOMException: The operation was aborted. {
+  message: "The operation was aborted. "
+  name: "AbortError",
+  ...
+}
+```
+
+Spójrzmy na przykładową obsługę wyjątku:
+
+```typescript
+fetch(url, { signal })
+  .then(...)
+  .catch((error) => {
+    if (error.name === 'AbortError') {
+      console.error('Request was aborted');
+    }
+  })
+```
+
+## Truskawka na torcie
+
+Nie chciałem pozostawiać was z suchymi przykładami w postaci bloków kodu, więc przygotowałem małe demo, gdzie możecie zobaczyć jak `AbortController` działa w praktyce. Zapytanie posiada jednosekundowy \_timeout, ponieważ przechodzi przez serwis [deelay.me](https://deelay.me/), więc nie ma potrzebny sztucznego spowolnienia sieci w narzędziach developerskich.
+
+Owocnego kodowania!
+
+<iframe
+  src="https://codesandbox.io/embed/abortcontroller-xqohhf?autoresize=1&fontsize=14&hidenavigation=1&theme=dark"
+  loading="lazy"
+  style={{ width: '100%', height: 500, border: 0, borderRadius: 4, overflow: 'hidden' }}
+  title="AbortController"
+  allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+  sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+></iframe>
