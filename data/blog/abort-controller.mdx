@@ -4,6 +4,7 @@ date: '2022-02-19'
 tags: ['javascript', 'webdev']
 draft: false
 summary: 'Czy można przerwać zapytania do API, które jeszcze się nie zakończyło? Z interfejsem AbortController, który jest dostarczany przez wszystkie nowoczesne przeglądarki, jesteśmy w stanie to zrobić.'
+images: ['/static/images/blog/abort-controller/cover.jpg']
 ---
 
 Pisząc aplikacje internetowe, czasami potrzebujemy sprawić, żeby zapytanie asynchroniczne można było przerwać. Powodów jest wiele — danie możliwości użytkownikowi anulowania przesyłania pliku, przerwanie poprzedniego zapytania, które się jeszcze nie zakończyło, a nowe odpytuje ponownie o ten sam zasób czy podczas odmontowania komponentu Reactowego musimy przerwać zapytanie, żeby zapobiec wyciekowi pamięci. Dzięki `AbortController`, które rozszerza _fetch API_ jesteśmy w stanie zrobić to bardzo prosto więc warto dodać tę wiedzę do własnego arsenału umiejętności.
