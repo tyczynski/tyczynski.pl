@@ -7,20 +7,21 @@ summary: 'Czy można przerwać zapytania do API, które jeszcze się nie zakońc
 images: ['/static/images/blog/abort-controller/cover.jpg']
 ---
 
-Pisząc aplikacje internetowe, czasami potrzebujemy przerwać zapytanie asynchroniczne, które jest w trakcie wykonywania. Powodów jest wiele — danie możliwości użytkownikowi anulowania przesyłania pliku, przerwanie poprzedniego zapytania, które się jeszcze nie zakończyło, a nowe odpytuje ponownie o ten sam zasób czy podczas odmontowania komponentu Reactowego musimy przerwać zapytanie, żeby zapobiec wyciekowi pamięci. Dzięki `AbortController`, które rozszerza _fetch API_ jesteśmy w stanie zrobić to bardzo prosto więc warto dodać tę wiedzę do własnego arsenału umiejętności.
+Pisząc aplikacje internetowe, czasami potrzebujemy przerwać zapytanie asynchroniczne, które jest w trakcie wykonywania. Powodów jest wiele — danie możliwości użytkownikowi anulowania przesyłania pliku, przerwanie istniejącego zapytania ponieważ zmienił się stan aplikacji czy przed odmontowaniem komponentu Reactowego, żeby zapobiec wyciekowi pamięci. Dzięki `AbortController`, które rozszerza _fetch API_ jesteśmy w stanie to zrobić w parę chwil, a sama wiedza na temat tej techniki skutecznie rozszerzy twoją wiedzę.
 
 ## Geneza i wparcie
 
-`AbortController` nie istniał od początku istnienia _fetch API_. Potrzeba zrodziła się od _Issue_ założonego na GitHubie, z którym możecie zapoznać się [tutaj](https://github.com/whatwg/fetch/issues/27). Jest to już dojrzałe API, dostępne na wszystkich istotnych przeglądarkach (zgodnie z caniuse wsparcie na poziomie 94%), lecz gdy będzie potrzeba wsparcia starszych przeglądarek z pomocą wychodzi nam [polyfill](https://github.com/mo/abortcontroller-polyfill).
+`AbortController` został zaimplementowany po tym jak na GitHubie w ramach [_Issue_](https://github.com/whatwg/fetch/issues/27) zrodziła się potrzeba dodania takiej funkcjonalności. Samo API jest już dojrzałe i z bardzo szerokim wsparciem na wszystkich istotnych przeglądarkach (zgodnie z caniuse wsparcie na poziomie 94%), lecz gdy będzie potrzeba wykorzystania go na starszych przeglądarkach to z pomocą wychodzi nam [polyfill](https://github.com/mo/abortcontroller-polyfill).
 
 ## _AbortController_ w praktyce
 
-`AbortController` nie jest skomplikowaną klasą. Udostępnia nam metodę `abort()`, oraz właściwość `signal`, która jest obiektem typu `AbortSignal`. `signal` dodatkowo zawiera w sobie właściwość-flagę `aborted`, która jest `true` gdy zapytanie zostanie przez nas przerwane.
+[`AbortController`](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) nie jest mocno rozbudowaną klasą. Udostępnia nam metodę `abort()`, oraz właściwość `signal`, która jest obiektem typu [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal). `signal` dodatkowo zawiera w sobie właściwość-flagę `aborted`, która jest `true` gdy zapytanie zostanie przez nas przerwane.
 
 Przyjrzyjmy się prostej implementacji:
 
 ```javascript
 const controller = new AbortController()
+console.log(controller.signal.aborted) // => false
 
 fetch(firstUrl, {
   signal: controller.signal,
@@ -30,13 +31,14 @@ fetch(secondUrl, {
 })
 
 controller.abort()
+console.log(controller.signal.aborted) // => true
 ```
 
 Jak widać, nie jest to specjalnie skomplikowane. Najpierw musimy stworzyć nową instancję `AbortController`, następnie przekazujemy `signal` do jednego lub wielu `fetch`, a na koniec w zależności od potrzeb wykonujemy `abort()` w celu anulowania zapytania.
 
 ### Obsługa wyjątków
 
-Jest jeszcze jedna rzecz, którą należy wiedzieć. Wywołując `abort()` rzucany jest wyjątek, który należy obsłużyć. Błąd jest typu `DOMException`, a zidentyfikować można go po nazwie `AbortError`.
+Jest jeszcze jedna rzecz, którą należy wiedzieć. Wywołując `abort()` rzucany jest wyjątek, który należy obsłużyć. Błąd jest typu `DOMException`, a zidentyfikować można go po nazwie _AbortError_.
 
 ```javascript
 DOMException: The operation was aborted. {
@@ -60,7 +62,7 @@ fetch(url, { signal })
 
 ## Truskawka na torcie
 
-Nie chciałem pozostawiać was z suchymi przykładami w postaci bloków kodu, więc przygotowałem małe demo, gdzie możecie zobaczyć jak `AbortController` działa w praktyce. Zapytanie posiada jednosekundowy _timeout_, ponieważ przechodzi przez serwis [deelay.me](https://deelay.me/), więc nie ma potrzebny sztucznego spowolnienia sieci w narzędziach developerskich.
+Nie chciałem pozostawiać was z suchymi przykładami w postaci bloków kodu, więc przygotowałem małe demo, na którym możecie zobaczyć jak `AbortController` działa w praktyce. Zapytanie posiada jednosekundowy _timeout_, ponieważ przechodzi przez serwis [deelay.me](https://deelay.me/), więc nie ma potrzebny sztucznego spowolnienia sieci w narzędziach developerskich.
 
 Owocnego kodowania!
 
