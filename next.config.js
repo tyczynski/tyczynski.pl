@@ -11,7 +11,7 @@ const ContentSecurityPolicy = `
   media-src 'none';
   connect-src *;
   font-src 'self' fonts.gstatic.com cdn.jsdelivr.net;
-  frame-src giscus.app
+  frame-src giscus.app codesandbox.io
 `
 
 const securityHeaders = [
@@ -56,6 +56,13 @@ const securityHeaders = [
  * @type {import('next/dist/next-server/server/config').NextConfig}
  **/
 module.exports = withBundleAnalyzer({
+  swcMinify: true,
+  compiler: {
+    reactRemoveProperties: true,
+    removeConsole: {
+      exclude: ['error', 'warn'],
+    },
+  },
   reactStrictMode: true,
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   eslint: {
