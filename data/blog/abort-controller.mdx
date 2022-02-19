@@ -7,7 +7,7 @@ summary: 'Czy można przerwać zapytania do API, które jeszcze się nie zakońc
 images: ['/static/images/blog/abort-controller/cover.jpg']
 ---
 
-Pisząc aplikacje internetowe, czasami potrzebujemy przerwać zapytanie asynchroniczne można, które jest w trakcie wykonywania. Powodów jest wiele — danie możliwości użytkownikowi anulowania przesyłania pliku, przerwanie poprzedniego zapytania, które się jeszcze nie zakończyło, a nowe odpytuje ponownie o ten sam zasób czy podczas odmontowania komponentu Reactowego musimy przerwać zapytanie, żeby zapobiec wyciekowi pamięci. Dzięki `AbortController`, które rozszerza _fetch API_ jesteśmy w stanie zrobić to bardzo prosto więc warto dodać tę wiedzę do własnego arsenału umiejętności.
+Pisząc aplikacje internetowe, czasami potrzebujemy przerwać zapytanie asynchroniczne, które jest w trakcie wykonywania. Powodów jest wiele — danie możliwości użytkownikowi anulowania przesyłania pliku, przerwanie poprzedniego zapytania, które się jeszcze nie zakończyło, a nowe odpytuje ponownie o ten sam zasób czy podczas odmontowania komponentu Reactowego musimy przerwać zapytanie, żeby zapobiec wyciekowi pamięci. Dzięki `AbortController`, które rozszerza _fetch API_ jesteśmy w stanie zrobić to bardzo prosto więc warto dodać tę wiedzę do własnego arsenału umiejętności.
 
 ## Geneza i wparcie
 
