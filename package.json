@@ -1,6 +1,5 @@
 {
   "name": "tyczynski.pl",
-  "version": "1.2.1",
   "private": true,
   "homepage": "https://tyczynski.pl",
   "repository": {
@@ -11,71 +10,14 @@
     "url": "https://github.com/tyczynski/tyczynski.pl/issues"
   },
   "scripts": {
-    "analyze": "cross-env ANALYZE=true next build",
-    "build": "next build && node ./scripts/generate-sitemap",
+    "build": "next build",
     "dev": "next dev",
-    "format": "prettier --write .",
-    "start": "next start",
-    "test:lint": "next lint",
-    "test:type-check": "tsc --pretty --noEmit",
-    "prepare": "husky install"
+    "start": "next start"
   },
   "dependencies": {
-    "@mailchimp/mailchimp_marketing": "^3.0.58",
-    "@tailwindcss/forms": "^0.4.0",
-    "@tailwindcss/typography": "^0.5.0",
-    "autoprefixer": "^10.4.0",
-    "esbuild": "^0.13.13",
-    "github-slugger": "^1.3.0",
-    "gray-matter": "^4.0.2",
-    "image-size": "1.0.0",
-    "mdx-bundler": "^8.0.0",
     "next": "^12.1.0",
-    "next-themes": "^0.0.14",
-    "postcss": "^8.4.5",
     "preact": "^10.6.2",
     "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "reading-time": "1.3.0",
-    "rehype-autolink-headings": "^6.1.0",
-    "rehype-citation": "^0.1.2",
-    "rehype-katex": "^6.0.2",
-    "rehype-prism-plus": "^1.1.3",
-    "rehype-slug": "^5.0.0",
-    "remark-footnotes": "^4.0.1",
-    "remark-gfm": "^3.0.1",
-    "remark-math": "^5.1.1",
-    "sharp": "^0.28.3",
-    "tailwindcss": "^3.0.2",
-    "unist-util-visit": "^4.0.0"
-  },
-  "devDependencies": {
-    "@next/bundle-analyzer": "12.0.7",
-    "@svgr/webpack": "^6.1.2",
-    "@types/react": "^17.0.14",
-    "@types/tailwindcss": "^2.2.0",
-    "@typescript-eslint/eslint-plugin": "^4.28.1",
-    "@typescript-eslint/parser": "^4.28.1",
-    "cross-env": "^7.0.3",
-    "dedent": "^0.7.0",
-    "eslint": "^7.29.0",
-    "eslint-config-next": "12.0.7",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.3.1",
-    "file-loader": "^6.0.0",
-    "globby": "11.0.3",
-    "husky": "^6.0.0",
-    "inquirer": "^8.1.1",
-    "lint-staged": "^11.0.0",
-    "prettier": "2.2.1",
-    "typescript": "^4.3.5"
-  },
-  "lint-staged": {
-    "*.+(js|jsx|ts|tsx)": [
-      "eslint --fix"
-    ],
-    "*.+(js|jsx|ts|tsx|json|css|md|mdx)": [
-      "prettier --write"
-    ]
+    "react-dom": "17.0.2"
   }
 }
