@@ -23,22 +23,22 @@ module.exports = {
   redirects() {
     return [
       {
-        source: 'blog/abort-controller',
+        source: '/blog/abort-controller',
         destination: 'https://frontem.xyz/blog/abort-controller',
         permanent: true,
       },
       {
-        source: 'blog/logpoint',
+        source: '/blog/logpoint',
         destination: 'https://frontem.xyz/blog/logpoint',
         permanent: true,
       },
       {
-        source: 'blog/react-dependency-array',
+        source: '/blog/react-dependency-array',
         destination: 'https://frontem.xyz/blog/react-dependency-array',
         permanent: true,
       },
       {
-        source: 'blog/array-groupby',
+        source: '/blog/array-groupby',
         destination: 'https://frontem.xyz/blog/array-groupby',
         permanent: true,
       },
