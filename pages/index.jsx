@@ -21,7 +21,7 @@ export default function Home() {
         .
       </p>
       <p>
-        Jeżeli jesteście ciekawi{' '}
+        Jeżeli jesteś ciekawy{' '}
         <a
           target="_blank"
           rel="noreferrer noopener nofollow"
